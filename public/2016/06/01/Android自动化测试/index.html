@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="来自贫穷小山村，但我想回去"><meta name="keywords" content="技术, android, 爬虫, 机器学习"><title>Android自动化测试 | 看淡生死，不服就干</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Android自动化测试</h1><a id="logo" href="/.">看淡生死，不服就干</a><p class="description">黑药店</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Android自动化测试</h1><div class="post-meta"><a href="/2016/06/01/Android自动化测试/#comments" class="comment-count"></a><p><span class="date">Jun 01, 2016</span><span><a href="/categories/Android基础学习/" class="category">Android基础学习</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p><img src="http://or9mw8j7a.bkt.clouddn.com/3-141209112525.jpg" alt="enter image description here"></p>
+<hr>
+<p>[TOC]</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><pre><code>Android自带了很多方便的测试工具和方法，包括我们常用的单元测试、UI测试、Monkey测试、Robotium测试、MonkeyRunner测试、senevent模拟等。这些API对于我们编写高质量的APP十分有用。一方面可以发现一些隐藏问题，另一方面可以使测试过程规范化。综合以上原因，本文将分别针对Monkey测试、单元测试以及UI测试进行介绍。
+</code></pre><h3 id="Monkey测试"><a href="#Monkey测试" class="headerlink" title="Monkey测试"></a>Monkey测试</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><pre><code>Monkey是Android SDK提供的一个命令行工具，可以简单、方便地运行在任何版本的Android模拟器和实体设备上。 Monkey会发送伪随机的用户事件流（如：点击、滑动、按键等，事件类别随机，就和一只猴子在试用你的APP一样，目的只为玩坏它），主要应用于APP的压力和可靠性测试。  
+</code></pre><h4 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h4><pre><code>（1） Monkey程序由Android系统自带，使用Java语言写成，在Android文件系统中的存放路径是： /system/framework/monkey.jar；   
+（2） Monkey.jar程序是由一个名为“monkey”的Shell脚本来启动执行，shell脚本在Android文件系统中 的存放路径是：/system/bin/monkey；  
+（3）Monkey 命令启动方式：  
+
+    - 可以通过PC机CMD窗口中执行: adb shell monkey ｛+命令参数｝来进行Monkey测试  
+    - 或在Android机或者模拟器上直接执行monkey 命令，可以在Android机上安装Android终端模拟器  
+    - 一般使用如下命令：adb shell -p xxx.xxx.com -v 1000 进行测试，其中xxx.xxx.com是要测试的APP的包名         
+</code></pre><h4 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h4><p>部分输出数据如下所示：<br><img src="http://or9mw8j7a.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170629170549.png" alt="输出数据"></p>
+<h4 id="更多参数介绍"><a href="#更多参数介绍" class="headerlink" title="更多参数介绍"></a>更多参数介绍</h4><p><a href="http://blog.csdn.net/linghu_java/article/details/6732895" target="_blank" rel="noopener">点击查看</a></p>
+<h4 id="可能会遇到的问题"><a href="#可能会遇到的问题" class="headerlink" title="可能会遇到的问题"></a>可能会遇到的问题</h4><pre><code>（1）“&apos;adb&apos; 不是内部或外部命令，也不是可运行的程序或批处理文件。”  
+</code></pre><p><a href="http://www.cnblogs.com/dwf07223/p/3228047.html" target="_blank" rel="noopener">点击查看解决方案</a></p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><pre><code>单元测试是为了测试某一个代码单元而写的测试代码。“一个代码单元”一般就是一个方法（函数）。总结一下，我们可以这样理解：单元测试，是为了测试某一个类的某一个方法能否正常工作，而写的测试代码。Java单元测试框架：Junit、Mockito、Powermockito等,最开始建议先学习Junit &amp; Mockito。这两款框架是java领域应用非常普及，使用简单，网上文章非常多，官网的说明也很清晰。junit运行在jvm上，所以只能测试纯java，若要测试依赖android库的代码，可以用mockito隔离依赖（下面会谈及）。
+</code></pre><h4 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h4><pre><code>首先我们的项目要依赖于junit库，Android studio创建项目时会自动引入该库，即在app的build.gradle中的如下语句：
+
+dependencies {
+    testCompile &apos;junit:junit:4.12&apos;
+}
+</code></pre><p>而后在test文件下写单元测试类<br><img src="http://or9mw8j7a.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170629180104.png" alt="enter image description here"></p>
+<p>被测试类如下</p>
+<pre><code>public class Calculator {
+    public static int add(int a, int b) {
+        return a + b;
+    }
+}
+</code></pre><p>单元测试类如下</p>
+<pre><code>public class ExampleUnitTest {
+    @Test
+    public void addition_isCorrect() throws Exception {
+        assertEquals(4, Calculator.add(2,2));
+    }
+}
+</code></pre><p>最后运行单元测试类，结果如下：</p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170629181932.png" alt="enter image description here"></p>
+<h4 id="Junit标签解析"><a href="#Junit标签解析" class="headerlink" title="Junit标签解析"></a>Junit标签解析</h4><p>在Junit中有多种标签可供使用，以下是它们的使用时机，以及作用：</p>
+<pre><code>@Test： 将方法（函数）标记为测试用例
+@Before： 每一个使用@Test标记的方法运行之前都要运行一次
+@After： 每一个使用@Test标记的方法运行之后都要运行一次
+@BeforeClass： 整个测试类运行过程中，最先运行，且只运行一次
+@AfterClass： 整个测试类运行过程中，最后运行，且只运行一次
+</code></pre><p>以如下代码为例：</p>
+<pre><code>public class ExampleUnitTest {
+
+    @Test
+    public void addition_isCorrect() throws Exception {
+        System.out.println(&quot;@Test&quot;);
+    }
+
+
+    @Test
+    public void addition_isErr() throws Exception {
+        System.out.println(&quot;@Test&quot;);
+    }
+
+    @Before
+    public void before() throws Exception {
+        System.out.println(&quot;@Before&quot;);
+    }
+
+    @After
+    public void after() throws Exception {
+        System.out.println(&quot;@After&quot;);
+    }
+
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        System.out.println(&quot;@AfterClass&quot;);
+    }
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        System.out.println(&quot;@BeforeClass&quot;);
+    }
+}
+</code></pre><p>相应的执行顺序如下：<br><img src="http://or9mw8j7a.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170629184021.png" alt="enter image description here"></p>
+<h4 id="Mockito使用方式"><a href="#Mockito使用方式" class="headerlink" title="Mockito使用方式"></a>Mockito使用方式</h4><p>简介：</p>
+<pre><code>Mockito 是一个流行 mock 框架（mock 是指类或者接口的模拟实现，你可以自定义一个对象中某个方法的输出结果），可以和JUnit结合起来使用。Mockito 允许你创建和配置 mock 对象，并且定义它的行为。使用Mockito可以明显的简化对外部依赖的测试类的开发。
+</code></pre><p><strong>先体验以下Mockito的使用：</strong></p>
+<p>1.添加依赖</p>
+<pre><code>testCompile &apos;org.mockito:mockito-core:2.8.47&apos;
+</code></pre><p>2.被依赖类</p>
+<pre><code>public interface IMathUtils {
+    public int abs(int num); // 求绝对值
+}
+</code></pre><p>3.依赖类</p>
+<pre><code>@RunWith(MockitoJUnitRunner.class)
+public class MockTest {
+    @Mock
+    IMathUtils mathUtils;
+
+    @Test
+    public void mockTest() {
+
+        when(mathUtils.abs(-1)).thenReturn(1); // 当调用abs(-1)时，返回1
+
+        int abs = mathUtils.abs(-1); // 输出结果 1
+
+        Assert.assertEquals(abs, 1);// 测试通过
+    }
+}
+</code></pre><p>可以发现<strong>IMathUtils</strong>是一个接口，根本就没有实现，用<strong>Mockito</strong>框架mock之后，IMathUtils.abs(-1)就有返回值1了。这就是Mockito神奇的地方！<strong>Mockito代理了IMathUtils.abs(num)的行为</strong>，只要调用时符合指定参数（代码中指定参数-1），就可以得到映射的返回值。</p>
+<p>Mockito的语法<strong>when…thenReturn…</strong>相当直观，直观解释就是当调用某个过程时，返回固定的结果。</p>
+<p>上述的依赖类也可以使用如下方式来写：</p>
+<pre><code>public class MockTest {
+
+    @Mock
+    IMathUtils iMathUtils ; 
+
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+
+    @Test
+    public void mockTest()  {
+        when(mathUtils.abs(-1)).thenReturn(1); // 当调用abs(-1)时，返回1
+
+        int abs = mathUtils.abs(-1); // 输出结果 1
+
+        Assert.assertEquals(abs, 1);// 测试通过
+    }
+}
+</code></pre><p>其中<strong>@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();</strong> 用于初始化Mock对象，效果与在类前添加<strong>@RunWith(MockitoJUnitRunner.class)</strong>标签类似</p>
+<p><strong>Mock配置</strong></p>
+<p>Mock有多种配置方式，如下所示：</p>
+<pre><code>@Test
+public void test1()  {
+        //  创建 mock
+        MyClass test = Mockito.mock(MyClass.class);
+
+    // 自定义 getUniqueId() 的返回值
+    when(test.getUniqueId()).thenReturn(43);
+
+    // 在测试中使用mock对象
+    assertEquals(test.getUniqueId(), 43);
+}
+
+// 返回多个值
+@Test
+public void testMoreThanOneReturnValue()  {
+        Iterator i= mock(Iterator.class);
+        when(i.next()).thenReturn(&quot;Mockito&quot;).thenReturn(&quot;rocks&quot;);
+        String result=i.next()+&quot; &quot;+i.next();
+        // 断言
+        assertEquals(&quot;Mockito rocks&quot;, result);
+}
+
+// 如何根据输入来返回值
+@Test
+public void testReturnValueDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(&quot;Mockito&quot;)).thenReturn(1);
+        when(c.compareTo(&quot;Eclipse&quot;)).thenReturn(2);
+        // 断言
+        assertEquals(1,c.compareTo(&quot;Mockito&quot;));
+}
+
+// 如何让返回值不依赖于输入
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(anyInt())).thenReturn(-1);
+        // 断言
+        assertEquals(-1 ,c.compareTo(9));
+}
+
+// 根据参数类型来返回值
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(isA(Todo.class))).thenReturn(0);
+        // 断言
+        Todo todo = new Todo(5);
+        assertEquals(todo ,c.compareTo(new Todo(1)));
+}
+</code></pre><p>更多配置可以看下这个网站  <a href="http://static.javadoc.io/org.mockito/mockito-core/2.8.47/org/mockito/Mockito.html" target="_blank" rel="noopener">点击链接</a></p>
+<h3 id="UI测试"><a href="#UI测试" class="headerlink" title="UI测试"></a>UI测试</h3><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h4><pre><code>UI测试顾名思义就是：开发人员可以对已经安装到手机或模拟器上的APP进行功能性的测试。现在Android studio自带的Espresso就是一个很好的UI测试框架。
+</code></pre><h4 id="使用方式-2"><a href="#使用方式-2" class="headerlink" title="使用方式"></a>使用方式</h4><p>1.配置Espresso依赖，现在Android Studio都会在项目创建时自动导入。</p>
+<pre><code>testCompile &apos;com.android.support.test.espresso:espresso-core:2.2.2&apos;
+testCompile &apos;com.android.support.test:runner:0.4.1&apos;
+</code></pre><p>2.在androidTest目录下创建测试类</p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170630135600.png" alt="enter image description here"></p>
+<p>3.被测试类（即activity之类的展示界面）<br>MainActivity.class</p>
+<pre><code>public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private EditText mEt;
+    private TextView mTv;
+    private Button mBtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mEt = (EditText) findViewById(R.id.et);
+        mTv = (TextView) findViewById(R.id.tv);
+        mBtn = (Button) findViewById(R.id.btn);
+
+        mBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mTv.setText(mEt.getText().toString());
+    }
+}
+</code></pre><p>activity_main.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;xgn.com.androidautotest.MainActivity&quot;&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/tv&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_marginTop=&quot;15dp&quot;
+    android:padding=&quot;10dp&quot;
+    android:text=&quot;helo&quot; /&gt;
+
+&lt;EditText
+    android:id=&quot;@+id/et&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;40dp&quot;
+    android:layout_alignParentLeft=&quot;true&quot;
+    android:layout_alignParentStart=&quot;true&quot;
+    android:layout_alignParentTop=&quot;true&quot;
+    android:layout_marginTop=&quot;75dp&quot; /&gt;
+
+&lt;Button
+    android:id=&quot;@+id/btn&quot;
+    android:layout_width=&quot;80dp&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:layout_below=&quot;@+id/et&quot;
+    android:layout_centerHorizontal=&quot;true&quot;
+    android:layout_marginTop=&quot;49dp&quot;
+    android:text=&quot;sure&quot; /&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>测试类<br>ExampleInstrumentedTest.class</p>
+<pre><code>@RunWith(AndroidJUnit4.class)
+public class ExampleInstrumentedTest {
+    @Rule
+    public ActivityTestRule&lt;MainActivity&gt; mActivityRule = new ActivityTestRule&lt;&gt;(
+            MainActivity.class);
+
+    @Test
+    public void useAppContext() throws Exception {
+        // Context of the app under test.
+        onView(withId(R.id.et)).perform(typeText(&quot;helo world&quot;),
+                closeSoftKeyboard());
+        onView(withId(R.id.btn)).perform(click());
+    }
+}
+</code></pre><p>其中<strong>onView(withId(R.id.et)).perform(typeText(“helo world”), closeSoftKeyboard());</strong>选择界面中的输入框，并输入“helo world”，<strong>onView(withId(R.id.btn)).perform(click());</strong>选择界面中的按钮并点击。</p>
+<p><a href="https://github.com/hehonghui/android-tech-frontier/blob/master/issue-11/Android-Espresso%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D.md" target="_blank" rel="noopener">更多操作方式-1</a><br><a href="http://blog.csdn.net/eclipsexys/article/details/45622813" target="_blank" rel="noopener">更多操作方式-2</a></p>
+<h4 id="标签解析"><a href="#标签解析" class="headerlink" title="标签解析"></a>标签解析</h4><pre><code>@Rule: 应用于成员变量
+@ClassRule: 应用于测试类中的静态变量
+两者共同点：这些变量必须是TestRule接口的实例，且访问修饰符必须为public。
+
+@RunWith（AndroidJUnit4.class）：  用于修改测试运行器
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>总的来说自动化测试能够很大程度上减少开发者在测试APP上所消耗的事件，一个好的测试用例能够使APP更可靠，也可以使开发者对自己的作品更有信心。各种测试方式能够搭配使用，合理的配合能够使测试的效果达到最大化。
+</code></pre><p>Android自动化测试</p>
+<p>enter image description here</p>
+<p>Android自动化测试<br>摘要<br>Monkey测试<br>简介<br>使用方式<br>效果展示<br>更多参数介绍<br>可能会遇到的问题<br>单元测试<br>简介<br>使用方式<br>Junit标签解析<br>Mockito使用方式<br>UI测试<br>简介<br>使用方式<br>标签解析<br>总结<br>摘要</p>
+<p>Android自带了很多方便的测试工具和方法，包括我们常用的单元测试、UI测试、Monkey测试、Robotium测试、MonkeyRunner测试、senevent模拟等。这些API对于我们编写高质量的APP十分有用。一方面可以发现一些隐藏问题，另一方面可以使测试过程规范化。综合以上原因，本文将分别针对Monkey测试、单元测试以及UI测试进行介绍。<br>Monkey测试</p>
+<p>简介</p>
+<p>Monkey是Android SDK提供的一个命令行工具，可以简单、方便地运行在任何版本的Android模拟器和实体设备上。 Monkey会发送伪随机的用户事件流（如：点击、滑动、按键等，事件类别随机，就和一只猴子在试用你的APP一样，目的只为玩坏它），主要应用于APP的压力和可靠性测试。<br>使用方式</p>
+<p>（1） Monkey程序由Android系统自带，使用Java语言写成，在Android文件系统中的存放路径是： /system/framework/monkey.jar；<br>（2） Monkey.jar程序是由一个名为“monkey”的Shell脚本来启动执行，shell脚本在Android文件系统中 的存放路径是：/system/bin/monkey；<br>（3）Monkey 命令启动方式：  </p>
+<pre><code>- 可以通过PC机CMD窗口中执行: adb shell monkey ｛+命令参数｝来进行Monkey测试  
+- 或在Android机或者模拟器上直接执行monkey 命令，可以在Android机上安装Android终端模拟器  
+- 一般使用如下命令：adb shell -p xxx.xxx.com -v 1000 进行测试，其中xxx.xxx.com是要测试的APP的包名         
+</code></pre><p>效果展示</p>
+<p>部分输出数据如下所示：</p>
+<p>输出数据</p>
+<p>更多参数介绍</p>
+<p>点击查看</p>
+<p>可能会遇到的问题</p>
+<p>（1）“’adb’ 不是内部或外部命令，也不是可运行的程序或批处理文件。”<br>点击查看解决方案</p>
+<p>单元测试</p>
+<p>简介</p>
+<p>单元测试是为了测试某一个代码单元而写的测试代码。“一个代码单元”一般就是一个方法（函数）。总结一下，我们可以这样理解：单元测试，是为了测试某一个类的某一个方法能否正常工作，而写的测试代码。Java单元测试框架：Junit、Mockito、Powermockito等,最开始建议先学习Junit &amp; Mockito。这两款框架是java领域应用非常普及，使用简单，网上文章非常多，官网的说明也很清晰。junit运行在jvm上，所以只能测试纯java，若要测试依赖android库的代码，可以用mockito隔离依赖（下面会谈及）。<br>使用方式</p>
+<p>首先我们的项目要依赖于junit库，Android studio创建项目时会自动引入该库，即在app的build.gradle中的如下语句：</p>
+<p>dependencies {<br>    testCompile ‘junit:junit:4.12’<br>}<br>而后在test文件下写单元测试类</p>
+<p>enter image description here</p>
+<p>被测试类如下</p>
+<p>public class Calculator {<br>    public static int add(int a, int b) {<br>        return a + b;<br>    }<br>}<br>单元测试类如下</p>
+<p>public class ExampleUnitTest {<br>    @Test<br>    public void addition_isCorrect() throws Exception {<br>        assertEquals(4, Calculator.add(2,2));<br>    }<br>}<br>最后运行单元测试类，结果如下：</p>
+<p>enter image description here</p>
+<p>Junit标签解析</p>
+<p>在Junit中有多种标签可供使用，以下是它们的使用时机，以及作用：</p>
+<p>@Test： 将方法（函数）标记为测试用例<br>@Before： 每一个使用@Test标记的方法运行之前都要运行一次<br>@After： 每一个使用@Test标记的方法运行之后都要运行一次<br>@BeforeClass： 整个测试类运行过程中，最先运行，且只运行一次<br>@AfterClass： 整个测试类运行过程中，最后运行，且只运行一次<br>以如下代码为例：</p>
+<p>public class ExampleUnitTest {</p>
+<pre><code>@Test
+public void addition_isCorrect() throws Exception {
+    System.out.println(&quot;@Test&quot;);
+}
+
+
+@Test
+public void addition_isErr() throws Exception {
+    System.out.println(&quot;@Test&quot;);
+}
+
+@Before
+public void before() throws Exception {
+    System.out.println(&quot;@Before&quot;);
+}
+
+@After
+public void after() throws Exception {
+    System.out.println(&quot;@After&quot;);
+}
+
+
+@AfterClass
+public static void afterClass() throws Exception {
+    System.out.println(&quot;@AfterClass&quot;);
+}
+
+@BeforeClass
+public static void beforeClass() throws Exception {
+    System.out.println(&quot;@BeforeClass&quot;);
+}
+</code></pre><p>}<br>相应的执行顺序如下：</p>
+<p>enter image description here</p>
+<p>Mockito使用方式</p>
+<p>简介：</p>
+<p>Mockito 是一个流行 mock 框架（mock 是指类或者接口的模拟实现，你可以自定义一个对象中某个方法的输出结果），可以和JUnit结合起来使用。Mockito 允许你创建和配置 mock 对象，并且定义它的行为。使用Mockito可以明显的简化对外部依赖的测试类的开发。<br>先体验以下Mockito的使用：</p>
+<p>1.添加依赖</p>
+<p>testCompile ‘org.mockito:mockito-core:2.8.47’<br>2.被依赖类</p>
+<p>public interface IMathUtils {<br>    public int abs(int num); // 求绝对值<br>}<br>3.依赖类</p>
+<p>@RunWith(MockitoJUnitRunner.class)<br>public class MockTest {<br>    @Mock<br>    IMathUtils mathUtils;</p>
+<pre><code>@Test
+public void mockTest() {
+
+    when(mathUtils.abs(-1)).thenReturn(1); // 当调用abs(-1)时，返回1
+
+    int abs = mathUtils.abs(-1); // 输出结果 1
+
+    Assert.assertEquals(abs, 1);// 测试通过
+}
+</code></pre><p>}<br>可以发现IMathUtils是一个接口，根本就没有实现，用Mockito框架mock之后，IMathUtils.abs(-1)就有返回值1了。这就是Mockito神奇的地方！Mockito代理了IMathUtils.abs(num)的行为，只要调用时符合指定参数（代码中指定参数-1），就可以得到映射的返回值。</p>
+<p>Mockito的语法when…thenReturn…相当直观，直观解释就是当调用某个过程时，返回固定的结果。</p>
+<p>上述的依赖类也可以使用如下方式来写：</p>
+<p>public class MockTest {</p>
+<pre><code>@Mock
+IMathUtils iMathUtils ; 
+
+@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+
+@Test
+public void mockTest()  {
+    when(mathUtils.abs(-1)).thenReturn(1); // 当调用abs(-1)时，返回1
+
+    int abs = mathUtils.abs(-1); // 输出结果 1
+
+    Assert.assertEquals(abs, 1);// 测试通过
+}
+</code></pre><p>}<br>其中@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 用于初始化Mock对象，效果与在类前添加@RunWith(MockitoJUnitRunner.class)标签类似</p>
+<p>Mock配置</p>
+<p>Mock有多种配置方式，如下所示：</p>
+<p>@Test<br>public void test1()  {<br>        //  创建 mock<br>        MyClass test = Mockito.mock(MyClass.class);</p>
+<pre><code>// 自定义 getUniqueId() 的返回值
+when(test.getUniqueId()).thenReturn(43);
+
+// 在测试中使用mock对象
+assertEquals(test.getUniqueId(), 43);
+</code></pre><p>}</p>
+<p>// 返回多个值<br>@Test<br>public void testMoreThanOneReturnValue()  {<br>        Iterator i= mock(Iterator.class);<br>        when(i.next()).thenReturn(“Mockito”).thenReturn(“rocks”);<br>        String result=i.next()+” “+i.next();<br>        // 断言<br>        assertEquals(“Mockito rocks”, result);<br>}</p>
+<p>// 如何根据输入来返回值<br>@Test<br>public void testReturnValueDependentOnMethodParameter()  {<br>        Comparable c= mock(Comparable.class);<br>        when(c.compareTo(“Mockito”)).thenReturn(1);<br>        when(c.compareTo(“Eclipse”)).thenReturn(2);<br>        // 断言<br>        assertEquals(1,c.compareTo(“Mockito”));<br>}</p>
+<p>// 如何让返回值不依赖于输入<br>@Test<br>public void testReturnValueInDependentOnMethodParameter()  {<br>        Comparable c= mock(Comparable.class);<br>        when(c.compareTo(anyInt())).thenReturn(-1);<br>        // 断言<br>        assertEquals(-1 ,c.compareTo(9));<br>}</p>
+<p>// 根据参数类型来返回值<br>@Test<br>public void testReturnValueInDependentOnMethodParameter()  {<br>        Comparable c= mock(Comparable.class);<br>        when(c.compareTo(isA(Todo.class))).thenReturn(0);<br>        // 断言<br>        Todo todo = new Todo(5);<br>        assertEquals(todo ,c.compareTo(new Todo(1)));<br>}<br>更多配置可以看下这个网站 点击链接</p>
+<p>UI测试</p>
+<p>简介</p>
+<p>UI测试顾名思义就是：开发人员可以对已经安装到手机或模拟器上的APP进行功能性的测试。现在Android studio自带的Espresso就是一个很好的UI测试框架。<br>使用方式</p>
+<p>1.配置Espresso依赖，现在Android Studio都会在项目创建时自动导入。</p>
+<p>testCompile ‘com.android.support.test.espresso:espresso-core:2.2.2’<br>testCompile ‘com.android.support.test:runner:0.4.1’<br>2.在androidTest目录下创建测试类</p>
+<p>enter image description here</p>
+<p>3.被测试类（即activity之类的展示界面）<br>MainActivity.class</p>
+<p>public class MainActivity extends AppCompatActivity implements View.OnClickListener{</p>
+<pre><code>private EditText mEt;
+private TextView mTv;
+private Button mBtn;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    mEt = (EditText) findViewById(R.id.et);
+    mTv = (TextView) findViewById(R.id.tv);
+    mBtn = (Button) findViewById(R.id.btn);
+
+    mBtn.setOnClickListener(this);
+}
+
+@Override
+public void onClick(View v) {
+    mTv.setText(mEt.getText().toString());
+}
+</code></pre><p>}<br>activity_main.xml</p>
+<p>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;</p>
+<relativelayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" tools:context="xgn.com.androidautotest.MainActivity">
+
+<textview android:id="@+id/tv" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margintop="15dp" android:padding="10dp" android:text="helo">
+
+<edittext android:id="@+id/et" android:layout_width="match_parent" android:layout_height="40dp" android:layout_alignparentleft="true" android:layout_alignparentstart="true" android:layout_alignparenttop="true" android:layout_margintop="75dp">
+
+<p><button android:id="@+id/btn" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_below="@+id/et" android:layout_centerhorizontal="true" android:layout_margintop="49dp" android:text="sure"><br></button></p></edittext></textview></relativelayout><br>测试类<br>ExampleInstrumentedTest.class<p></p>
+<p>@RunWith(AndroidJUnit4.class)<br>public class ExampleInstrumentedTest {<br>    @Rule<br>    public ActivityTestRule<mainactivity> mActivityRule = new ActivityTestRule&lt;&gt;(<br>            MainActivity.class);</mainactivity></p>
+<pre><code>@Test
+public void useAppContext() throws Exception {
+    // Context of the app under test.
+    onView(withId(R.id.et)).perform(typeText(&quot;helo world&quot;),
+            closeSoftKeyboard());
+    onView(withId(R.id.btn)).perform(click());
+}
+</code></pre><p>}<br>其中onView(withId(R.id.et)).perform(typeText(“helo world”), closeSoftKeyboard());选择界面中的输入框，并输入“helo world”，onView(withId(R.id.btn)).perform(click());选择界面中的按钮并点击。</p>
+<p>更多操作方式-1<br>更多操作方式-2</p>
+<p>标签解析</p>
+<p>@Rule: 应用于成员变量<br>@ClassRule: 应用于测试类中的静态变量<br>两者共同点：这些变量必须是TestRule接口的实例，且访问修饰符必须为public。</p>
+<p>@RunWith（AndroidJUnit4.class）：  用于修改测试运行器<br>总结</p>
+<p>总的来说自动化测试能够很大程度上减少开发者在测试APP上所消耗的事件，一个好的测试用例能够使APP更可靠，也可以使开发者对自己的作品更有信心。各种测试方式能够搭配使用，合理的配合能够使测试的效果达到最大化。<br>     7539<br>qqq2830<br> 退出账号<br>当前文档<br> 恢复至上次同步状态<br> 删除文档<br> 导出…<br> 预览文档<br> 分享链接<br>系统<br> 设置<br> 使用说明<br> 快捷帮助<br> 常见问题<br> 关于</p>
+<p>搜索文件<br>杂物 Android自动化测试<br>杂物 SwipeToLoadLayout<br>检查Evernote中的笔记版本</p>
+</div><div class="tags"><a href="/tags/Android/">Android</a><a href="/tags/技术/">技术</a><a href="/tags/测试/">测试</a></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2016/06/01/Dagger2/" class="pre">Dagger2全面解析</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#摘要"><span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Monkey测试"><span class="toc-text">Monkey测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用方式"><span class="toc-text">使用方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#效果展示"><span class="toc-text">效果展示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更多参数介绍"><span class="toc-text">更多参数介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可能会遇到的问题"><span class="toc-text">可能会遇到的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单元测试"><span class="toc-text">单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#简介-1"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用方式-1"><span class="toc-text">使用方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Junit标签解析"><span class="toc-text">Junit标签解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mockito使用方式"><span class="toc-text">Mockito使用方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI测试"><span class="toc-text">UI测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#简介-2"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用方式-2"><span class="toc-text">使用方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标签解析"><span class="toc-text">标签解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Dagger2/">Dagger2全面解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Android自动化测试/">Android自动化测试</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android基础学习/">Android基础学习</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/三方框架/" style="font-size: 15px;">三方框架</a> <a href="/tags/技术/" style="font-size: 15px;">技术</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/p/e53918bc9e32" title="简书" target="_blank">简书</a><ul></ul><a href="http://blog.csdn.net/qqq2830" title="csdn" target="_blank">csdn</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">塑料葫芦娃.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>

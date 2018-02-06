@@ -1,14 +1,14 @@
 ﻿---
-title: Dagger2的好处
+title: Dagger2全面解析
 date: 2016-06-01 23:47:44
-categories: "Android三方框架学习"
+categories: "Android基础学习"
 tags:
      - Android
      - 三方框架
      - 技术
 ---
-[TOC]
 
+![enter image description here](http://op0dvu7tu.bkt.clouddn.com/timg.jpg)
 
 ### Dagger2的好处
 
