@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="来自贫穷小山村，但我想回去"><meta name="keywords" content="技术, android, 爬虫, 机器学习"><title>Dagger2的好处 | 看淡生死，不服就干</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Dagger2的好处</h1><a id="logo" href="/.">看淡生死，不服就干</a><p class="description">黑药店</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Dagger2的好处</h1><div class="post-meta"><a href="/2016/06/01/Dagger2/#comments" class="comment-count"></a><p><span class="date">Jun 01, 2016</span><span><a href="/categories/Hexo教程/" class="category">Hexo教程</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>[TOC]</p>
+<h3 id="Dagger2的好处"><a href="#Dagger2的好处" class="headerlink" title="Dagger2的好处"></a>Dagger2的好处</h3><ul>
+<li>依赖的注入和配置独立于组件之外。</li>
+<li>因为对象是在一个独立、不耦合的地方初始化，所以当注入抽象方法的时候，我们只需要修改对象的实现方法，而不用大改代码库。</li>
+<li>依赖可以注入到一个组件中：我们可以注入这些依赖的模拟实现，这样使得测试更加简单。</li>
+</ul>
+<h3 id="相关标签"><a href="#相关标签" class="headerlink" title="相关标签"></a>相关标签</h3><p> <strong>@Inject、@Module、@Provide、@Component</strong></p>
+<ul>
+<li><p>@Inject: 通常在需要依赖的地方使用这个注解。换句话说，你用它告诉Dagger这个类或者字段需要依赖注入。这样，Dagger就会构造一个这个类的实例并满足他们的依赖。</p>
+</li>
+<li><p>@Module: Modules类里面的方法专门提供依赖，所以我们定义一个类，用@Module注解，这样Dagger在构造类的实例的时候，就知道从哪里去找到需要的依赖。modules的一个重要特征是它们设计为分区并组合在一起（比如说，在我们的app中可以有多个组成在一起的modules）。</p>
+</li>
+<li><p>@Provide: 在modules中，我们定义的方法是用这个注解，以此来告诉Dagger我们想要构造对象并提供这些依赖。</p>
+</li>
+<li><p>@Component: Components从根本上来说就是一个注入器，也可以说是@Inject和@Module的桥梁，它的主要作用就是连接这两个部分。 Components可以提供所有定义了的类型的实例，比如：我们必须用@Component注解一个接口然后列出所有的@Modules组成该组件，如果缺失了任何一块都会在编译的时候报错。所有的组件都可以通过它的modules知道依赖的范围。</p>
+</li>
+</ul>
+<h3 id="标签使用方式"><a href="#标签使用方式" class="headerlink" title="标签使用方式"></a>标签使用方式</h3><p><strong>1.@Inject</strong>  </p>
+<pre><code>public class User {  
+
+    ....  
+    ....  
+    //在被依赖类中使用@Inject标记该类的构造方法
+    @Inject  
+    public User() {  
+    }  
+
+    ....  
+    ....    
+}  
+</code></pre><hr>
+<pre><code>public class MainActivity extends AppCompatActivity {  
+
+    //在依赖类中使用@Inject来注入被依赖类实例
+    @Inject  
+    User user;  
+    @Inject  
+    User user2;  
+    private TextView tv;  
+    private TextView tv2;  
+
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.activity_main);  
+        //实例component，并通过其inject（）方法来对成员变量（通过@Inject进行表述的）进行赋值
+        DaggerActivityComponent.builder().build().inject(this);  
+        tv = ((TextView) findViewById(R.id.tv));  
+        tv2 = ((TextView) findViewById(R.id.tv2));  
+        tv.setText(user.toString());  
+        tv2.setText(user2.toString());  
+    }  
+} 
+</code></pre><p><strong>2.@Component</strong></p>
+<pre><code>@Component  
+public interface ActivityComponent {  
+    void inject(MainActivity activity);  
+}  
+</code></pre><p><strong>3.@Provider &amp; @Module</strong></p>
+<pre><code>@Module  
+public class UserModule {  
+    @Provides
+    User providesUser() {  
+        return new User();  
+    }  
+}  
+</code></pre><h3 id="注入方式"><a href="#注入方式" class="headerlink" title="注入方式"></a>注入方式</h3><ul>
+<li>构造方法注入：在类的构造方法前面注释@Inject</li>
+<li>成员变量注入：在类的成员变量（非私有）前面注释@Inject</li>
+<li>函数方法注入：在函数前面注释@Inject</li>
+</ul>
+<h3 id="不同类的关系"><a href="#不同类的关系" class="headerlink" title="不同类的关系"></a>不同类的关系</h3><p><img src="http://or9mw8j7a.bkt.clouddn.com/%E6%9C%AA%E6%A0%87%E9%A2%98-2-%E6%81%A2%E5%A4%8D%E7%9A%84.png" alt="enter image description here"></p>
+<h3 id="编译后的生成文件与原文件及关系图"><a href="#编译后的生成文件与原文件及关系图" class="headerlink" title="编译后的生成文件与原文件及关系图"></a>编译后的生成文件与原文件及关系图</h3><p><strong>原文件</strong><br><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818105449.png" alt="enter image description here"></p>
+<p><strong>生成文件</strong><br><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818105426.png" alt="enter image description here"></p>
+<p><strong>各文件对应关系</strong><br><img src="http://or9mw8j7a.bkt.clouddn.com/%E7%BC%96%E8%AF%91%E5%90%8E%E5%85%B3%E7%B3%BB%E5%9B%BE.png" alt="enter image description here"></p>
+<h3 id="注入路径"><a href="#注入路径" class="headerlink" title="注入路径"></a>注入路径</h3><p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818112230.png" alt="enter image description here"></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818111938.png" alt="enter image description here"></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818112629.png" alt="enter image description here"></p>
+<h3 id="Scope（用于划分作用域）"><a href="#Scope（用于划分作用域）" class="headerlink" title="@Scope（用于划分作用域）"></a>@Scope（用于划分作用域）</h3><p><strong>javax包中自带的@Singleton,其class如下：</strong></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818113850.png" alt="enter image description here"></p>
+<p><strong>用户自己写的</strong></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818114133.png" alt="enter image description here"></p>
+<p><strong><em>可以看出除了少了@Documented标签外，用户自己写的Scope标签和@Singleton并没有本质的区别</em></strong></p>
+<h4 id="各标签的意义"><a href="#各标签的意义" class="headerlink" title="各标签的意义"></a>各标签的意义</h4><p><strong>@Retention</strong></p>
+<p>Retention(保留)注解说明,这种类型的注解会被保留到那个阶段. 有三个值:<br>1.RetentionPolicy.SOURCE —— 这种类型的Annotations只在源代码级别保留,编译时就会被忽略<br>2.RetentionPolicy.CLASS —— 这种类型的Annotations编译时被保留,在class文件中存在,但JVM将会忽略<br>3.RetentionPolicy.RUNTIME —— 这种类型的Annotations将被JVM保留,所以他们能在运行时被JVM或其他使用反射机制的代码所读取和使用.</p>
+<p><strong>@Documented</strong></p>
+<p>Documented 注解表明这个注解应该被 javadoc工具记录. 默认情况下,javadoc是不包括注解的. 但如果声明注解时指定了 @Documented,则它会被 javadoc 之类的工具处理, 所以注解类型信息也会被包括在生成的文档中. 示例6进一步演示了使用 </p>
+<p><strong>@Scope</strong></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818114808.png" alt="enter image description here"></p>
+<h3 id="Singleton的单例模式是如何起作用的（我只是个栗子）"><a href="#Singleton的单例模式是如何起作用的（我只是个栗子）" class="headerlink" title="@Singleton的单例模式是如何起作用的（我只是个栗子）"></a>@Singleton的单例模式是如何起作用的（我只是个栗子）</h3><p>该单例模式的前提是所使用的Component实例是同一个的情况下，而且任何自定义的Scope标签都有相同功能，具体实现如下：</p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818141827.png" alt="enter image description here"></p>
+<p><img src="http://or9mw8j7a.bkt.clouddn.com/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170818142004.png" alt="enter image description here"></p>
+<h3 id="Qualifier的巧用（指哪打哪）"><a href="#Qualifier的巧用（指哪打哪）" class="headerlink" title="@Qualifier的巧用（指哪打哪）"></a>@Qualifier的巧用（指哪打哪）</h3><p>@Qualifier是用来给注解做注解的。它告诉Dagger依赖需求方 创建数据的时候使用哪个依赖提供方。</p>
+<p>两个@Qualifier</p>
+<pre><code>@Qualifier
+public @interface ThemeNight {
+
+}
+
+@Qualifier
+public @interface ThemeDay {
+}
+</code></pre><hr>
+<pre><code>@Module
+public class ThemeModule {
+    @Provides
+    @ThemeDay
+    Theme provideDayTheme() {
+        return new Theme(&quot;day&quot;);
+    }
+
+    @Provides
+    @ThemeNight
+    Theme provideNightTheme() {
+        return new Theme(&quot;night&quot;);
+    }
+}
+</code></pre><hr>
+<pre><code>@Component
+public interface ThemeComponent{
+    void inject(ThemeTest themeTest);
+}
+</code></pre><hr>
+<pre><code>public class ThemeTest {
+    @Inject
+    @ThemeDay
+    Theme dayTheme;
+    @Inject
+    @ThemeNight
+    Theme nightTheme;
+
+    public static void main(String[] arg) {
+        ThemeTest themeTest = new ThemeTest();
+        DaggerThemeComponent.create().inject(themeTest);
+        System.out.println(themeTest.dayTheme.themeName);
+        System.out.println(themeTest.nightTheme.themeName);
+    }
+}
+</code></pre></div><div class="tags"><a href="/tags/标签1/">标签1</a><a href="/tags/标签2/">标签2</a></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dagger2的好处"><span class="toc-text">Dagger2的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关标签"><span class="toc-text">相关标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标签使用方式"><span class="toc-text">标签使用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注入方式"><span class="toc-text">注入方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不同类的关系"><span class="toc-text">不同类的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译后的生成文件与原文件及关系图"><span class="toc-text">编译后的生成文件与原文件及关系图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注入路径"><span class="toc-text">注入路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Scope（用于划分作用域）"><span class="toc-text">@Scope（用于划分作用域）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#各标签的意义"><span class="toc-text">各标签的意义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Singleton的单例模式是如何起作用的（我只是个栗子）"><span class="toc-text">@Singleton的单例模式是如何起作用的（我只是个栗子）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Qualifier的巧用（指哪打哪）"><span class="toc-text">@Qualifier的巧用（指哪打哪）</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Dagger2/">Dagger2的好处</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo教程/">Hexo教程</a><span class="category-list-count">1</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/标签1/" style="font-size: 15px;">标签1</a> <a href="/tags/标签2/" style="font-size: 15px;">标签2</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/p/e53918bc9e32" title="简书" target="_blank">简书</a><ul></ul><a href="http://blog.csdn.net/qqq2830" title="csdn" target="_blank">csdn</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">塑料葫芦娃.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>

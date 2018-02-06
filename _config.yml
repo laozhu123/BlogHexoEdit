@@ -3,11 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-author: John Doe
-language:
+title: 看淡生死，不服就干
+subtitle: 黑药店
+description: 来自贫穷小山村，但我想回去
+keywords: 技术, android, 爬虫, 机器学习
+author: 塑料葫芦娃
+language: zh-CN
 timezone:
 
 # URL
@@ -73,6 +74,10 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: BlueLake
+
+##生成压缩后的css
+stylus:
+  compress: true
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
