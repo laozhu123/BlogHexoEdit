@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="来自贫穷小山村，但我想回去"><meta name="keywords" content="技术, android, 爬虫, 机器学习"><title>python爬虫初涉 | 看淡生死，不服就干</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">python爬虫初涉</h1><a id="logo" href="/.">看淡生死，不服就干</a><p class="description">黑药店</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">python爬虫初涉</h1><div class="post-meta"><a href="/2018/02/06/python抓妹子/#comments" class="comment-count"></a><p><span class="date">Feb 06, 2018</span><span><a href="/categories/python/" class="category">python</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p><img src="http://op0dvu7tu.bkt.clouddn.com/helo004.jpg" alt="enter image description here"></p>
+<h3 id="文章简介"><a href="#文章简介" class="headerlink" title="文章简介"></a>文章简介</h3><p><strong>本文将介绍如何使用python对www.mzitu.com中所有的图片的爬取以及存储到本地最后我们会得到如下图1所示</strong></p>
+<p><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206142745.png" alt="enter image description here"></p>
+<p>是不是很心动，接下来就让我们开始python爬虫之旅，本期内容将会从单线程使用到多线程，从自己写python到使用scrapy包，以及分布式redis的使用，当然这些都是后话了，当前我们的目标是要爬去这个网站上的美图。</p>
+<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><p>废话少说接下来就是我们的基础环境部分<br><strong>1.Python – 3.6.1</strong>（这个版本其实要区别的就是python2和python3啦，我使用的python3）</p>
+<p><strong>2.Requests</strong> （看名字就知道这个是用来进行网络请求用的，这里的request是rllib包中的，之后我们要学的scrapy中也有自己想要的request，到时候两个不要搞混了）</p>
+<p><strong>3.beautifulsoup</strong> （当然数据获取到了之后，我们要对数据进行提取，解析就是通过beautifulsoup来进行，当然我们自己也可通过正则表达式来对数据进行过滤，如果你的正则水平不错的情况下） </p>
+<p><strong>4.LXML</strong> 一个HTML解析包 用于辅助beautifulsoup解析网页  </p>
+<hr>
+<p><strong>上面的模块需要 单独安装，下面几个就不用啦。</strong></p>
+<hr>
+<p><strong>5.OS 系统内置模块</strong> （这个玩意是系统内置的，在本文中我们通过它来将图片存储在本地）</p>
+<p><strong>6.PyCharm</strong>   一个草鸡好用的PythonIDE工具 、真滴。</p>
+<p>###模块的安装</p>
+<p>再使用pip指令之前我们需要安装python。（如果我们安装python时选择<strong>不将</strong>python写入环境变量的话，那么我们还需要将“文件夹\python36”和“文件夹\python36\Scripts”写入path中，这样我们才能在控制台中使用python和pip指令）</p>
+<p><strong>接下来就用指令安装模块</strong></p>
+<pre><code>pip install requests   
+pip install beautifulsoup4  
+pip install lxml
+</code></pre><p>大致结果就如下图所示<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206150606.png" alt="enter image description here"></p>
+<p>当python + 3个模块 + PyCharm安装完成之后我们就可以开始我们本次抓取的代码编写了。</p>
+<h3 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h3><p><strong>首先我们先整理一下爬图片的步骤：</strong></p>
+<p>1.我们需要一个目标网站（www.mzitu.com）<br>2.我们需要从一个网页中找出接下来要去的网页的链接地址，通过beautifulsoup来获取<br>3.获取网页中的图片地址<br>4.下载图片到本地</p>
+<p><strong>步骤1：</strong><br>www.mzitu.com网站的截图如下，这里选择了www.mzitu.com/all作为起始网页，因为在该网页中包含了网站中所有图片组图的链接链接地址<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206160047.png" alt="enter image description here"></p>
+<p><strong>步骤2：</strong><br>推荐使用chrome浏览器来进行网页源码的查看<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206160522.png" alt="enter image description here"></p>
+<p>通过观察我们可以发现接下来的链接地址在所在的<strong>href</strong>是被<strong>div class=all</strong>所包含着的，所有我们可以使用这一点来找到所有的url地址</p>
+<p><strong>步骤3：</strong><br>接下来我们就进入到某个链接里面去看图了<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206161232.png" alt="enter image description here"><br>相应图片的地址被包含在<strong>div class=’main-image’</strong>中</p>
+<p>注意着个有一套图（一般她们拍写真都有很多张的），所以呢我们就看下接下来的这张图<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180206161358.png" alt="enter image description here"><br>着张图里的<strong>href</strong>就是套图里其他图片所在网页的地址了，有了这个我们就可以获取接下来的图片了，其中通过观察可以发现<strong>href</strong>被包在<strong>div class=‘pagenavi’</strong>中</p>
+<p><strong>步骤4：</strong><br><strong>开始代码编写</strong></p>
+<p>我们需要在代码中引入相应的模块</p>
+<pre><code>import requests
+from bs4 import BeautifulSoup
+import os
+</code></pre><p>获取起始网页内容</p>
+<pre><code>html = self.request(url)
+</code></pre><p>这里的request是下面的这个方法</p>
+<pre><code>def request(self, url):  ##这个函数获取网页的response 然后返回
+    headers = {
+    &apos;User-Agent&apos;: &quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1&quot;}
+    content = requests.get(url, headers=headers)
+
+    return content
+</code></pre><p>获取步骤1中内容（也就是所有套图的地址），并进一步发送请求获取到套图首张图片所在网页</p>
+<pre><code>all_a = BeautifulSoup(html.text, &apos;lxml&apos;).find(&apos;div&apos;, class_=&apos;all&apos;).find_all(&apos;a&apos;)
+for a in all_a:       
+    title = a.get_text() #取出a标签的文本       
+    href = a[&apos;href&apos;] #取出a标签的href 属性，也就是套图地址
+    self.html(href, &quot;e:\\pic\\&quot; + path)
+</code></pre><p>相应的html方法</p>
+<pre><code>def html(self, href, path):  ##这个函数是处理套图地址获得图片的页面地址
+    html = self.request(href)
+    helo = BeautifulSoup(html.text, &apos;lxml&apos;).find_all(&apos;span&apos;)
+    if len(helo) &lt; 10:
+        return
+    max_span = helo[10].get_text()
+    for page in range(1, int(max_span) + 1):
+        page_url = href + &apos;/&apos; + str(page)
+        self.img(page_url, path)  ##调用img函数
+</code></pre><p>上面的html方法中的后半截是执行了步骤3中的后半部分，也就是遍历了套图中其他图片所在的网页，相应的img方法如下</p>
+<pre><code>def img(self, page_url, path):  ##这个函数处理图片页面地址获得图片的实际地址
+    img_html = self.request(page_url)
+    helo = BeautifulSoup(img_html.text, &apos;lxml&apos;).find(&apos;div&apos;, class_=&apos;main-image&apos;)
+    if helo is not None:
+        helo1 = helo.find(&apos;img&apos;)
+        if helo1 is not None:
+            # do some thing you need
+            img_url = helo1[&apos;src&apos;]
+            self.saveImg(img_url, path)
+
+def saveImg(self, url, path):
+    getHeaders = {
+        &apos;Host&apos;: &apos;i.meizitu.net&apos;,
+        &apos;Connection&apos;: &apos;Keep-Alive&apos;,
+        &apos;Accept&apos;: &apos;image/webp,image/apng,image/*,*/*;q=0.8&apos;,
+        &apos;Upgrade-Insecure-Requests&apos;: &apos;1&apos;,
+        &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36&apos;,
+        &apos;Referer&apos;: &apos;http://www.mzitu.com/&apos;,
+        &apos;Accept-Encoding&apos;: &apos;gzip, deflate&apos;,
+        &apos;Accept-Language&apos;: &apos;zh-CN,zh;q=0.9&apos;
+    }
+    response = requests.get(url, headers=getHeaders)
+
+    if (response.status_code == 404):  # 若404错误，递归get，尝试非重定向方式获取
+        response = requests.get(url, headers=getHeaders, allow_redirects=False)
+        if (response.status_code == 302):  # 302表示访问对象已被移动到新位置，但仍按照原地址进行访问（造成404错误）。
+            name = url[-9:-4]
+            redirectUrl = response.headers[&apos;location&apos;]  # 因此需在响应头文件中获取重定向后地址
+            response = requests.get(redirectUrl)
+            fp = open(name + &quot;.jpg&quot;, &apos;ab&apos;)
+            fp.write(response.content)
+            fp.close()
+    else:
+        os.chdir(path)
+        name = url[-9:-4]
+        fp = open(name + &quot;.jpg&quot;, &apos;ab&apos;)
+        fp.write(response.content)
+        fp.close()
+        self.picNum = self.picNum + 1
+        print(self.picNum)
+</code></pre><p>方法saveImg执行了步骤4，也就是将图片保存在了本地。</p>
+<p><strong>总结</strong></p>
+<p>本片文字是在之前微信上看到的一篇文章改写的，当时照着那篇文字将代码写了一遍之后发现，保存在本地的图片都被篡改了，也就是被防盗链了，而后就只能修改request中的一些参数来确保准确性。在上面这些完成后，发现对爬虫有了一点的了解之后想着是不是可以使用多线程的方式来爬去，就又看了多线程的写法，下面贴出多线程的代码，这里使用的线程池。</p>
+<p><strong>多线程代码</strong></p>
+<pre><code>import requests
+from bs4 import BeautifulSoup
+import os
+import threading
+import threadpool
+
+
+class mzitu():
+    num = 0
+    picNum = 0
+
+    def all_url(self, url):
+        self.cv = threading.Condition()
+        html = self.request(url)  ##调用request函数把套图地址传进去会返回给我们一个response
+        all_a = BeautifulSoup(html.text, &apos;lxml&apos;).find(&apos;div&apos;, class_=&apos;all&apos;).find_all(&apos;a&apos;)
+
+        task_pool = threadpool.ThreadPool(50)
+        requests = threadpool.makeRequests(self.nice, all_a)
+        for req in requests:
+            task_pool.putRequest(req)
+        task_pool.wait()
+
+    def nice(self, a):
+        title = a.get_text()
+        path = str(title).replace(&quot;?&quot;, &apos;_&apos;)  ##我注意到有个标题带有 ？  这个符号Windows系统是不能创建文件夹的所以要替换掉
+        if self.mkdir(path):  ##调用mkdir函数创建文件夹！这儿path代表的是标题title哦！！！！！不要糊涂了哦！
+            os.chdir(&quot;e:\\pic\\&quot; + path)  ##切换到目录
+            href = a[&apos;href&apos;]
+            self.html(href, &quot;e:\\pic\\&quot; + path)  ##调用html函数把href参数传递过去！href是啥还记的吧？ 就是套图的地址哦！！不要迷糊了哦！
+
+    def html(self, href, path):  ##这个函数是处理套图地址获得图片的页面地址
+        html = self.request(href)
+        helo = BeautifulSoup(html.text, &apos;lxml&apos;).find_all(&apos;span&apos;)
+        if len(helo) &lt; 10:
+            return
+        max_span = helo[10].get_text()
+        for page in range(1, int(max_span) + 1):
+            page_url = href + &apos;/&apos; + str(page)
+            self.img(page_url, path)  ##调用img函数
+
+    def img(self, page_url, path):  ##这个函数处理图片页面地址获得图片的实际地址
+        img_html = self.request(page_url)
+        helo = BeautifulSoup(img_html.text, &apos;lxml&apos;).find(&apos;div&apos;, class_=&apos;main-image&apos;)
+        if helo is not None:
+            helo1 = helo.find(&apos;img&apos;)
+            if helo1 is not None:
+                # do some thing you need
+                img_url = helo1[&apos;src&apos;]
+                self.saveImg(img_url, path)
+
+    def mkdir(self, path):  ##这个函数创建文件夹
+        path = path.strip()
+        if path.__contains__(&quot;妲己&quot;):
+            return False
+        isExists = os.path.exists(os.path.join(&quot;e:\\pic\\&quot;, path))
+        if not isExists:
+            os.makedirs(os.path.join(&quot;e:\\pic\\&quot;, path))
+            return True
+        else:
+            return False
+
+    def request(self, url):  ##这个函数获取网页的response 然后返回
+        headers = {
+            &apos;User-Agent&apos;: &quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1&quot;}
+        content = requests.get(url, headers=headers)
+
+        return content
+
+    def saveImg(self, url, path):
+        getHeaders = {
+            &apos;Host&apos;: &apos;i.meizitu.net&apos;,
+            &apos;Connection&apos;: &apos;Keep-Alive&apos;,
+            &apos;Accept&apos;: &apos;image/webp,image/apng,image/*,*/*;q=0.8&apos;,
+            &apos;Upgrade-Insecure-Requests&apos;: &apos;1&apos;,
+            &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36&apos;,
+            &apos;Referer&apos;: &apos;http://www.mzitu.com/&apos;,
+            &apos;Accept-Encoding&apos;: &apos;gzip, deflate&apos;,
+            &apos;Accept-Language&apos;: &apos;zh-CN,zh;q=0.9&apos;
+        }
+
+        response = requests.get(url, headers=getHeaders)
+        if (response.status_code == 404):  # 若404错误，递归get，尝试非重定向方式获取
+            response = requests.get(url, headers=getHeaders, allow_redirects=False)
+            if (response.status_code == 302):  # 302表示访问对象已被移动到新位置，但仍按照原地址进行访问（造成404错误）。
+                name = url[-9:-4]
+                redirectUrl = response.headers[&apos;location&apos;]  # 因此需在响应头文件中获取重定向后地址
+                response = requests.get(redirectUrl)
+                fp = open(name + &quot;.jpg&quot;, &apos;ab&apos;)
+                fp.write(response.content)
+                fp.close()
+        else:
+            os.chdir(path)
+            name = url[-9:-4]
+            fp = open(name + &quot;.jpg&quot;, &apos;ab&apos;)
+            fp.write(response.content)
+            fp.close()
+            self.picNum = self.picNum + 1
+            print(self.picNum)
+
+Mzitu = mzitu()  ##实例化
+Mzitu.all_url(&apos;http://www.mzitu.com/all&apos;)  ##给函数all_url传入参数  你可以当作启动爬虫（就是入口）
+</code></pre></div><div class="tags"><a href="/tags/python/">python</a><a href="/tags/爬虫/">爬虫</a><a href="/tags/技术/">技术</a></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2016/06/01/Dagger2/" class="next">Dagger2全面解析</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#文章简介"><span class="toc-text">文章简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境介绍"><span class="toc-text">环境介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#爬虫编写"><span class="toc-text">爬虫编写</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/python抓妹子/">python爬虫初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Dagger2/">Dagger2全面解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Android自动化测试/">Android自动化测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/compileSdkVersion, minSdkVersion， targetSdkVersion这三兄弟/">compileSdkVersion, minSdkVersion， targetSdkVersion的关系</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android基础学习/">Android基础学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/技术/" style="font-size: 15px;">技术</a> <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/三方框架/" style="font-size: 15px;">三方框架</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/p/e53918bc9e32" title="简书" target="_blank">简书</a><ul></ul><a href="http://blog.csdn.net/qqq2830" title="csdn" target="_blank">csdn</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">塑料葫芦娃.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
