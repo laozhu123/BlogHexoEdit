@@ -8,7 +8,6 @@ tags:
      - 技术
 ---
 
-												来张图片压压惊
 ![enter image description here](http://op0dvu7tu.bkt.clouddn.com/helo005.jpg)
 
 ### 简介

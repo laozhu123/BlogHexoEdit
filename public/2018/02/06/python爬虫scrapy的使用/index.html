@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="来自贫穷小山村，但我想回去"><meta name="keywords" content="技术, android, 爬虫, 机器学习"><title>python爬虫scrapy的使用 | 生死看淡，不服就干</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">python爬虫scrapy的使用</h1><a id="logo" href="/.">生死看淡，不服就干</a><p class="description">计划生育养猪场</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">python爬虫scrapy的使用</h1><div class="post-meta"><a href="/2018/02/06/python爬虫scrapy的使用/#comments" class="comment-count"></a><p><span class="date">Feb 06, 2018</span><span><a href="/categories/python/" class="category">python</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p><img src="http://op0dvu7tu.bkt.clouddn.com/helo005.jpg" alt="enter image description here"></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><strong>本文将记录一次使用scrapy进行网页数据爬取的经历。</strong></p>
+<h3 id="环境与安装"><a href="#环境与安装" class="headerlink" title="环境与安装"></a>环境与安装</h3><p><strong>环境</strong></p>
+<p>python – 3.6.1（区别python2和python3就行了，两者的语法在有些地方有区别）<br>scrapy – 1.5.0 （这个是根据你的python版本来选择的）<br>twisted<br>wheel<br>pywin32</p>
+<p><strong>安装python</strong><br>这里就不再赘述了，无非就是到python的官方网站下载相应安装包安装。如果要看的话，可以看blog里的另外一篇文章，也就是《python爬妹子》这一篇，或者可以看这个网址<a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001374738150500472fd5785c194ebea336061163a8a974000" target="_blank" rel="noopener">python安装</a></p>
+<p><strong>安装scrapy</strong><br>一般使用windows电脑安装时会出现安装失败的情况，故而我们需要到<a href="https://pypi.python.org/pypi/Scrapy/1.5.0" target="_blank" rel="noopener">这个网站</a>下载相应的版本，来进行安装在安装之前我们还需要先安装wheel只需要在cmd中敲入：</p>
+<pre><code>pip install wheel
+</code></pre><p><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207153010.png" alt="|center"></p>
+<p>而后我们到<a href="https://pypi.python.org/pypi/Scrapy/1.5.0下载相应的scrapy的.whl文件" target="_blank" rel="noopener">https://pypi.python.org/pypi/Scrapy/1.5.0下载相应的scrapy的.whl文件</a><br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207153247.png" alt="enter image description here"></p>
+<p><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207153547.png" alt="|center"><br>经过上面两部我们就将scrapy安装到了本地，但是有没有发现还是无法运行，因为还有<strong>pywin32 和twisted没有安装</strong>故而我们继续到<a href="https://pypi.python.org/pypi/pywin32/222下载相应的的.whl文件进行安装" target="_blank" rel="noopener">https://pypi.python.org/pypi/pywin32/222下载相应的的.whl文件进行安装</a><br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207153939.png" alt="pywin32"><br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207154852.png" alt="|center"><br>同样使用命令行进行安装</p>
+<pre><code>pip install pywin32-222-cp36-cp36m-win_amd64.whl
+pip install Twisted-17.9.0-cp27-cp27m-win_amd64.whl
+</code></pre><p>安装好这些之后我们就可以来看下scrapy了<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207155127.png" alt="|center"></p>
+<h3 id="scrapy初涉"><a href="#scrapy初涉" class="headerlink" title="scrapy初涉"></a>scrapy初涉</h3><p>之前没有接触过的小伙伴可以先看下这个网站的内容<a href="https://doc.scrapy.org/en/latest/intro/tutorial.html" target="_blank" rel="noopener">https://doc.scrapy.org/en/latest/intro/tutorial.html</a></p>
+<p>我们先通过下面命令行创建一个scrapy项目</p>
+<pre><code>scrapy startproject heloScrapy
+</code></pre><p>相应的文件结构如下图所示</p>
+<p><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207161524.png" alt="|center"></p>
+<p>而后我们在spiders文件夹下创建一个demo.py文件，之后的主要代码都将在该文件内完成。<br>引入scrapy以及相应的request，并命名为demo</p>
+<pre><code>import scrapy
+from tutorial.items import TutorialItem
+from scrapy.http import Request
+
+class DmozSpider(scrapy.Spider):
+    name = &quot;demo&quot;
+    allowed_domains = [&quot;blog.csdn.net&quot;, &quot;baidu.com&quot;]
+    start_urls = [
+    &quot;http://blog.csdn.net/u013687632/article/details/57075514&quot;
+    ]
+</code></pre><p>此处在start_urls中设置了相应的初始网址<a href="http://blog.csdn.net/u013687632/article/details/57075514，也就是我们将从该网址出发来爬取相应网页内容，同时我们对于allowed_domains" target="_blank" rel="noopener">http://blog.csdn.net/u013687632/article/details/57075514，也就是我们将从该网址出发来爬取相应网页内容，同时我们对于allowed_domains</a> 的设置使我们只爬取这个域名内的网页。</p>
+<p>在设置好以上内容之后，scrapy会将start_urls 网页的内容以response的形式传递给parse函数，下面我们就将对parse函数进行定义</p>
+<pre><code>def parse(self, response):
+    filename = response.url.split(&quot;/&quot;)[-2]
+    with open(filename, &apos;wb&apos;) as f:
+        f.write(response.body)
+    for sel in response.xpath(&apos;//ul/li&apos;):
+        item = TutorialItem()
+        item[&apos;title&apos;] = sel.xpath(&apos;a/text()&apos;).extract()
+        item[&apos;link&apos;] = sel.xpath(&apos;a/@href&apos;).extract()
+        item[&apos;desc&apos;] = sel.xpath(&apos;text()&apos;).extract()
+        yield item
+
+        if sel.xpath(&apos;a/@href&apos;).extract() == &apos;&apos;:
+            print(&apos;empty&apos;)
+        else:
+            if len(sel.xpath(&apos;a/@href&apos;).extract()) &gt; 0:
+                self.num = self.num + 1
+
+                print(&apos;helo%s&apos; % (self.num))
+                yield Request(response.urljoin(sel.xpath(&apos;a/@href&apos;).extract()[0]), callback=self.parse)
+</code></pre><p>从以上内容可以看出我们的是对网页内人title、link、desc进行了抽取，同时根据link中的内容来进行接下去的网页爬取，其中需要注意的方法有一下几个：</p>
+<pre><code>with open(filename, &apos;wb&apos;) as f:
+    f.write(response.body)
+</code></pre><p>with as的语法是对于有<em>enter</em>()和<em>exit</em>()方法的对象使用的，这样可以减少我们代码的书写，不让像上面的内容我们就要写出如下的形式：</p>
+<pre><code>file = open(&quot;/tmp/foo.txt&quot;)
+try:
+    data = file.read()
+finally:
+    file.close()
+</code></pre><p>然后就是TutorialItem这个类了，该类我们定义在items.py中</p>
+<pre><code>import scrapy
+
+class TutorialItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    title = scrapy.Field()
+    link = scrapy.Field()
+    desc = scrapy.Field()
+    pass
+</code></pre><p>至于sel.xpath(‘a/text()’)就是用来过滤出我们需要的xml对象了，这个方法是lxml包中的，这个包我们在上一篇文章中已经安装过滤，也就是pip instll lxml，而该方法中的表达式该如何写，这个就要靠自己了，人总是要靠自己的。当然我们也可以看下这篇blog的内容<a href="https://www.cnblogs.com/lei0213/p/7506130.html" target="_blank" rel="noopener">https://www.cnblogs.com/lei0213/p/7506130.html</a></p>
+<p>最后你是不是对yield这个语法很困惑，这个就和生成器相关了，详细内容可以看这个blog <a href="http://python.jobbole.com/83610/，简单来将呢，yield就是一个关键词，类似return" target="_blank" rel="noopener">http://python.jobbole.com/83610/，简单来将呢，yield就是一个关键词，类似return</a>, 不同之处在于，yield返回的是一个生成器。</p>
+<p>最后的最后就是下面这段代码了</p>
+<pre><code>yield Request(response.urljoin(sel.xpath(&apos;a/@href&apos;).extract()[0]), callback=self.parse)
+</code></pre><p>它发起了对新的url的请求，并将返回的内容传递给parse进行处理，这就实现了新url的爬取效果。</p>
+<p>最后我们可以通过cmd输入一些命令来运行程序</p>
+<pre><code>scrapy crawl demo
+</code></pre><p>运行结果如下<br><img src="http://op0dvu7tu.bkt.clouddn.com/%E4%BA%91%E4%B9%8B%E5%AE%B6%E5%9B%BE%E7%89%8720180207164936.png" alt="enter image description here"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>使用scrapy能够为我们提供很大的便利，如待爬取队里的建立，以及url去重等都不需要我们去做了，当然最棒的是它有一个扩展包scrapy-redis，通过使用这个包我们可以实现分布式爬取，到时候我们的爬取速度就能够有指数级的提升了（在有多台硬件设备的情况下），而后通过这大量的数据我们就可以进行一些如数据挖掘、机器学习的工作了，是不是很心动。</p>
+</div><div class="tags"><a href="/tags/技术/">技术</a><a href="/tags/python/">python</a><a href="/tags/爬虫/">爬虫</a></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2018/02/06/python抓妹子/" class="next">python爬虫初涉</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境与安装"><span class="toc-text">环境与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scrapy初涉"><span class="toc-text">scrapy初涉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/python爬虫scrapy的使用/">python爬虫scrapy的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/python抓妹子/">python爬虫初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Android自动化测试/">Android自动化测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Dagger2/">Dagger2全面解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/compileSdkVersion, minSdkVersion， targetSdkVersion这三兄弟/">compileSdkVersion, minSdkVersion， targetSdkVersion的关系</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android基础学习/">Android基础学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/技术/" style="font-size: 15px;">技术</a> <a href="/tags/三方框架/" style="font-size: 15px;">三方框架</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/p/e53918bc9e32" title="简书" target="_blank">简书</a><ul></ul><a href="http://blog.csdn.net/qqq2830" title="csdn" target="_blank">csdn</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">塑料葫芦娃.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
