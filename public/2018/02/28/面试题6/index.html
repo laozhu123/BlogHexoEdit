@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="来自贫穷小山村，但我想回去"><meta name="keywords" content="技术, android, 爬虫, 机器学习"><title> | 生死看淡，不服就干</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">生死看淡，不服就干</h1><a id="logo" href="/.">生死看淡，不服就干</a><p class="description">计划生育养猪场</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title"></h1><div class="post-meta"><a href="/2018/02/28/面试题6/#comments" class="comment-count"></a><p><span class="date">Feb 28, 2018</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>1.高效加载大图片</p>
+<pre><code>BitmapFactory.Options options = new BitmapFactory.Options();  
+options.inJustDecodeBounds = true;  
+BitmapFactory.decodeResource(getResources(), R.id.myimage, options);  
+int imageHeight = options.outHeight;  
+int imageWidth = options.outWidth;  
+String imageType = options.outMimeType;  
+
+那我们怎样才能对图片进行压缩呢？通过设置BitmapFactory.Options中inSampleSize的值就可以实现。
+
+public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,  
+    int reqWidth, int reqHeight) {  
+    // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小  
+    final BitmapFactory.Options options = new BitmapFactory.Options();  
+    options.inJustDecodeBounds = true;  
+    BitmapFactory.decodeResource(res, resId, options);  
+    // 调用上面定义的方法计算inSampleSize值  
+    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);  
+    // 使用获取到的inSampleSize值再次解析图片  
+    options.inJustDecodeBounds = false;  
+    return BitmapFactory.decodeResource(res, resId, options);  
+}  
+</code></pre><p>2.map的内部实现<br>    Set&lt;Map.Entry<k, v="">&gt; entrySet();<br>    Iterator&lt;Entry<k,v>&gt; i = entrySet().iterator();</k,v></k,></p>
+<p>3.Android 中Serializable与Parcelable区别？<br>    两种都是用于支持序列化、反序列化话操作，两者最大的区别在于存储媒介的不同，Serializable使用IO读写存储在硬盘上，而Parcelable是直接在内存中读写，很明显内存的读写速度通常大于IO读写，所以在Android中通常优先选择Parcelable。</p>
+<pre><code>1.       整个读写全是在内存中进行，主要是通过malloc()、realloc()、memcpy()等内存操作进行，所以效率比JAVA序列化中使用外部存储器会高很多；
+
+2.       读写时是4字节对齐的，可以看到#define PAD_SIZE(s) (((s)+3)&amp;~3)这句宏定义就是在做这件事情；
+
+3.       如果预分配的空间不够时newSize = ((mDataSize+len)*3)/2;会一次多分配50%；
+
+4.       对于普通数据，使用的是mData内存地址，对于IBinder类型的数据以及FileDescriptor使用的是mObjects内存地址。后者是通过flatten_binder()和unflatten_binder()
+         实现的，目的是反序列化时读出的对象就是原对象而不用重新new一个新对象。
+
+
+public static final Parcelable.Creator&lt;MyColor&gt; CREATOR  
+    = new Parcelable.Creator&lt;MyColor&gt;() {  
+    public MyColor createFromParcel(Parcel in) {  
+        return new MyColor(in);  
+    }  
+
+    public MyColor[] newArray(int size) {  
+        return new MyColor[size];  
+    }  
+};  
+
+
+MyColor(Parcel in){  
+    color=in.readInt();  
+}  
+
+
+@Override  
+public void writeToParcel(Parcel dest, int flags) {  
+    dest.writeInt(color);  
+}  
+</code></pre><p>4.Binder也与Parcel相关，都是使用的Parcel的write<em>和read</em>方法</p>
+<pre><code>http://www.cnblogs.com/zhangxinyan/p/3487909.html
+
+客户端获取到的是proxy，服务端返回的是stub，这两者之间通过binder驱动来对应的
+
+ublic static com.example.laozhu.aidl.Helo asInterface(proxy){
+    return new com.example.laozhu.aidl.Helo.Stub.Proxy(obj);
+}
+
+其实Binder驱动会在内核为process创建一個binder_proc 结构提，在binder_proc中保存着四个RB Tree。
+其中三个tree就是保存binder_ref和binder_node的。就是传递来传递去的代理对象和实体对象。
+
+一个tree保存binder_node；另外两个tree保存binder_ref,这两个tree的内容其实都一样，只是为了便于搜索，就建了两个不同key的tree。
+
+这三个tree都具体存写什么东西？
+    --&gt;这样说，一个process里有个实体对象，就有多少个binder_node；一个process有多少个代理对象指向远端，就有多少个binder_ref.
+
+ProcessA向binder驱动传入一个handle，binder驱动就会根据handle在tree中找到对应的binder_ref。 binder_ref里面有一个node变量， 它就是对应的实体对象的node的地址，靠它找到对应的binder_node。然后在binder_node里面，也有一个变量：cookie，它就是BBinder的地址。找到BBinder就OK了。
+
+&lt;img src=&quot;https://images0.cnblogs.com/blog/575077/201401/02143950-a36c34c4f1aa402cb41624c7d6956877.png&quot; alt=&quot;&quot;&gt;
+
+
+
+this.attachInterface(this, DESCRIPTOR);
+
+而在onServiceConnected中的调用为：
+
+mService = IBookManager.Stub.asInterface(service);
+
+注意sercice为IBookManager.Stub，从而我们可以知道，
+
+我们即可以得出结论：同进程时，在onServiceConnection中获取到的是stub，而在不同进程中获取到的是binderProxy，该对象是在binder驱动中进行映射后的对象。
+
+共享内存块
+</code></pre></div><div class="tags"></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2018/02/28/面试题5/" class="next"></a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/02/28/面试题6/">面试题6</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/28/面试题5/">面试题5</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/27/面试题4/">面试题4</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/27/面试题3/">面试题3</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/27/面试题2/">面试题2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/27/面试题1/">面试题1</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/26/点击图标启动activity的过程/">点击图标启动activity的过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/python爬虫scrapy的使用/">python爬虫scrapy的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/python抓妹子/">python爬虫初涉</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/01/Dagger2/">Dagger2全面解析</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android基础学习/">Android基础学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">2</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/测试/" style="font-size: 15px;">测试</a> <a href="/tags/技术/" style="font-size: 15px;">技术</a> <a href="/tags/三方框架/" style="font-size: 15px;">三方框架</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/源码/" style="font-size: 15px;">源码</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/p/e53918bc9e32" title="简书" target="_blank">简书</a><ul></ul><a href="http://blog.csdn.net/qqq2830" title="csdn" target="_blank">csdn</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">塑料葫芦娃.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
