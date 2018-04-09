@@ -1,7 +1,7 @@
 ---
 title: 点击图标启动activity的过程
 date: 2018-02-26 12:02:30
-categories: "android"
+categories: "Android源码学习"
 tags:
      - android
      - 源码
