@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: Anisina
+theme: again
 
 ##生成压缩后的css
 stylus:
@@ -85,3 +85,36 @@ deploy:
   type: git
   repo: git@github.com:laozhu123/laozhu123.github.io.git
   branch: master
+
+
+avatar: http://img1.imgtn.bdimg.com/it/u=3268839804,809061049&fm=26&gp=0.jpg
+banner_small: http://img.zcool.cn/community/0117e2571b8b246ac72538120dd8a4.jpg@1280w_1l_2o_100sh.jpg
+banner_large: http://img.zcool.cn/community/0117e2571b8b246ac72538120dd8a4.jpg@1280w_1l_2o_100sh.jpg
+
+
+# disqus
+disqus_shortname: drakeleung
+
+
+# social
+social:
+  github: https://github.com/DrakeLeung
+  twitter: https://twitter.com/DrakeLeung
+  weibo: http://weibo.com/cha12chalyc
+
+# nav #
+nav:
+  home: .
+  archive: archives
+  # about: about
+  rss: atom.xml
+
+
+# heox-renderre-sass
+node_sass:
+  outputStyle: nested
+  precision: 5
+  sourceComments: false
+
+
+google_analytics: # Put tracking ID here

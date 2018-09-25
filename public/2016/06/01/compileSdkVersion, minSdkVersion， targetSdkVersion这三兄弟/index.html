@@ -1,174 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- Head tag -->
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="来自贫穷小山村，但我想回去">
-    <meta name="keyword" content="">
-    <meta name="theme-color" content="#600090">
-    <meta name="msapplication-navbutton-color" content="#600090">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
-    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
-    <link rel="alternate" type="application/atom+xml" title="生死看淡，不服就干" href="/atom.xml">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
-    <title>
-        
-        compileSdkVersion, minSdkVersion， targetSdkVersion的关系｜undefined
-        
-    </title>
-
-    <link rel="canonical" href="http://yoursite.com/2016/06/01/compileSdkVersion, minSdkVersion， targetSdkVersion这三兄弟/">
-
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/blog-style.css">
-
-    <!-- Pygments Github CSS -->
-    <link rel="stylesheet" href="/css/syntax.css">
+  <meta charset="utf-8">
+  <title>compileSdkVersion, minSdkVersion， targetSdkVersion的关系 | lyyourc</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <!-- <link rel='stylesheet' href='http://fonts.useso.com/css?family=Source+Code+Pro'> -->
+  
 </head>
 
-<style>
-
-    header.intro-header {
-        background-image: url('')
-    }
-</style>
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="" class="animated fadeIn">
-<!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
-" data-ishome = "false" >
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand animated pulse" href="/">
-                <span class="brand-logo">
-                    生死看淡，不服就干
-                </span>
-                's Blog
-            </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- Known Issue, found by Hux:
-            <nav>'s height woule be hold on by its content.
-            so, when navbar scale out, the <nav> will cover tags.
-            also mask any touch event of tags, unfortunately.
-        -->
-        <!-- /.navbar-collapse -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-					
-                    
-					
-					
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- /.container -->
+<body>
+  <nav class="app-nav">
+  
+    
+      <a href="/.">home</a>
+    
+  
+    
+      <a href="/archives">archive</a>
+    
+  
+    
+      <a href="/atom.xml">rss</a>
+    
+  
 </nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-//    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
 
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
-            $navbar.className = " ";
-            // wait until animation end.
-            setTimeout(function(){
-                // prevent frequently toggle
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
+  <main class="post">
+  <article>
+  <h1 class="article-title">
+    <a href="/2016/06/01/compileSdkVersion, minSdkVersion， targetSdkVersion这三兄弟/">compileSdkVersion, minSdkVersion， targetSdkVersion的关系</a>
+  </h1>
 
-<!-- Main Content -->
+  <section class="article-meta">
+    <p class="article-date">六月 01 2016</p>
+  </section>
 
-<!--only post-->
-
-
-<img class="wechat-title-img"
-     src="">
-
-
-<style>
-    
-    header.intro-header {
-        background-image: url('')
-    }
-
-    
-</style>
-
-<header class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
-                <div class="post-heading">
-                    <h1>compileSdkVersion, minSdkVersion， targetSdkVersion的关系</h1>
-                    
-                    <span class="meta">
-                         作者 塑料葫芦娃
-                        <span>
-                          日期 2016-06-01
-                         </span>
-                    </span>
-                    <div class="tags text-center">
-                        
-                        <a class="tag" href="/tags/#Android"
-                           title="Android">Android</a>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="post-title-haojen">
-        <span>
-            compileSdkVersion, minSdkVersion， targetSdkVersion的关系
-        </span>
-    </div>
-</header>
-
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-            <!-- Post Container -->
-            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p><img src="http://img.blog.csdn.net/20161130141617130" alt="这里写图片描述"></p>
+  <section class="article-entry">
+    <p><img src="http://img.blog.csdn.net/20161130141617130" alt="这里写图片描述"></p>
 <h2 id="选择你自己的-compileSdkVersion-minSdkVersion-and-targetSdkVersion"><a href="#选择你自己的-compileSdkVersion-minSdkVersion-and-targetSdkVersion" class="headerlink" title="选择你自己的 compileSdkVersion, minSdkVersion, and targetSdkVersion"></a><strong>选择你自己的 compileSdkVersion, minSdkVersion, and targetSdkVersion</strong></h2><p>当你将一个App发布出去之后，也许马上Google又发布了一个新的Android版本。那这是否就意味着你发布的App会出现一些版本上的问题。</p>
 <p>当然这并不会困扰我们，因为Android是<strong>向前兼容</strong>的—向前兼容即旧版本能够适应新版本的应用—对Android而言就是在旧版上开发的应用当我们将手机的版本升级之后一样可以使用。这就是<strong>compileSdkVersion</strong>,  <strong>minSdkVersion</strong>,  <strong>targetSdkVersion</strong>这三者的由来，它们分别控制可用API的版本号，需要的API版本号和使用何种兼容模式。</p>
 <h2 id="compileSdkVersion"><a href="#compileSdkVersion" class="headerlink" title="compileSdkVersion"></a><strong>compileSdkVersion</strong></h2><p>通过compileSdkVersion你可以告诉Gradle使用何种SDK版本来编译你的App。当你在代码中使用了一些新的API时，你就需要使用相应新的Android SDK。</p>
@@ -197,163 +67,78 @@
 <p>通过这样，你就可以获得最多的潜在用户数，同时使app性能更好，同时界面更酷炫。</p>
 <p>期待您的加入 <a href="https://plus.google.com/+AndroidDevelopers/posts/4TRW8SztAHv?utm_campaign=adp_series_sdkversion_010616&amp;utm_source=medium&amp;utm_medium=blog" target="_blank" rel="noopener">Google+ post</a> 和<a href="https://plus.google.com/collection/sLR0p?utm_campaign=adp_series_sdkversion_010616&amp;utm_source=medium&amp;utm_medium=blog" target="_blank" rel="noopener"> Android Development Patterns Collection</a></p>
 
-                <hr>
-                
-
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2016/06/01/Android自动化测试/" data-toggle="tooltip" data-placement="top"
-                           title="Android自动化测试">&larr; Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/2016/06/01/Dagger2/" data-toggle="tooltip" data-placement="top"
-                           title="Dagger2全面解析">Next Post &rarr;</a>
-                    </li>
-                    
-                </ul>
-
-                
-
-                
-
-
-                <!--加入新的评论系统-->
-                
-            </div>
-
-            <div class="hidden-xs col-sm-3 toc-col">
-                <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#选择你自己的-compileSdkVersion-minSdkVersion-and-targetSdkVersion"><span class="toc-text">选择你自己的 compileSdkVersion, minSdkVersion, and targetSdkVersion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#compileSdkVersion"><span class="toc-text">compileSdkVersion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#minSdkVersion"><span class="toc-text">minSdkVersion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#targetSdkVersion"><span class="toc-text">targetSdkVersion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gradle-and-SDK-versions"><span class="toc-text">Gradle and SDK versions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总的来说三者的关系"><span class="toc-text">总的来说三者的关系</span></a></li></ol>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Sidebar Container -->
-
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
-                
-
-                <!-- Friends Blog -->
-                
-            </div>
-        </div>
-
-    </div>
+  </section>
 </article>
 
+  <div class="sharing grid">
+  <section class="profile grid-item grid">
+    <img class="avatar" src="http://7xrcp8.com1.z0.glb.clouddn.com/avatar.png" alt="avatar" />
+    <div class="grid-item">
+      <p class="title"> lyyourc </p>
+      <p class="subtitle"> You Are The JavaScript In My HTML </p>
+    <div>
+  </section>
 
+  <section class="share-btns">
+    <!-- <p> share it if you like it~ </p> -->
+    <a
+  class="twitter-share-button"
+  data-size="large"
+  data-via="DrakeLeung"
+  href="https://twitter.com/intent/tweet?text=<img src="http://img"
+>
+  Tweet
+</a>
 
-
-
-
-
-<!-- Footer -->
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
-                <br>
-                <ul class="list-inline text-center">
-                
-                
-                
-
-                
-
-                
-
-                
-
-                
-
-                </ul>
-                <p class="copyright text-muted">
-                    Copyright &copy; 生死看淡，不服就干 2018
-                    <br>
-                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
-                    <br>
-                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
-                </p>
-
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="/js/blog.js"></script>
-
-<!-- async load function -->
 <script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
+  window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  js.async = true;
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));
 </script>
 
-<!-- jquery.tagcloud.js -->
+  </section>
+</div>
+
+
+  
+    
+<section class="article-comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
 <script>
-    // only load tagcloud.js in tag.html
-    if($('#tag_cloud').length !== 0){
-        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
+  var disqus_shortname = 'drakeleung';
+  
+  var disqus_url = 'http://yoursite.com/2016/06/01/compileSdkVersion, minSdkVersion， targetSdkVersion这三兄弟/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
 </script>
 
-<!--fastClick.js -->
-<script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
-</script>
 
-<!-- Google Analytics -->
+  
+</main>
 
-
-
-<!-- Baidu Tongji -->
-
-
-<!-- swiftype -->
-<script type="text/javascript">
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install','','2.0.0');
-</script>
-
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-<!--wechat title img-->
-<img class="wechat-title-img" src="">
 </body>
-
 </html>
